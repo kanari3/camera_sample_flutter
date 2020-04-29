@@ -1,62 +1,52 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
 
-void main() => runApp(MyApp());
+List<CameraDescription> cameras;
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+Future<void> main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
+
+
+  runApp(CameraApp());
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
+class CameraApp extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _CameraAppState createState() => _CameraAppState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _CameraAppState extends State<CameraApp> {
+  CameraController controller;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  @override
+  void initState() {
+    super.initState();
+    controller = CameraController(cameras[0], ResolutionPreset.medium);
+    controller.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
     });
   }
 
   @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
-    );
+    if (!controller.value.isInitialized) {
+      return Container();
+    }
+    return AspectRatio(
+        aspectRatio:
+        controller.value.aspectRatio,
+        child: CameraPreview(controller));
   }
 }
