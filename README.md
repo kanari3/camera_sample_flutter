@@ -1,4 +1,4 @@
-# kanari3_sample
+# kanari3_camera_sample
 
 A new Flutter project.
 
