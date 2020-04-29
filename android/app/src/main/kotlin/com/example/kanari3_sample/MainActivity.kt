@@ -1,4 +1,4 @@
-package com.example.kanari3_sample
+package com.example.kanari3_camera_sample
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
