@@ -1,35 +1,64 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
-List<CameraDescription> cameras;
-
-Future<void> main() async {
-
-  WidgetsFlutterBinding.ensureInitialized();
-  cameras = await availableCameras();
-
-
-  runApp(CameraApp());
+void main() {
+  runApp(new MaterialApp(
+    home: new Home(),
+    routes: <String, WidgetBuilder> {
+      '/capture': (BuildContext context) => new Capture(),
+    },
+  ));
 }
 
-class CameraApp extends StatefulWidget {
+class Home extends StatelessWidget {
   @override
-  _CameraAppState createState() => _CameraAppState();
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: const Text("Home"),
+      ),
+      body: new Center(
+        child: new RaisedButton(
+          child: const Text("Capture"),
+          onPressed: () {
+            Navigator.of(context).pushNamed("/capture");
+          },
+        ),
+      ),
+    );
+  }
 }
 
-class _CameraAppState extends State<CameraApp> {
+class Capture extends StatefulWidget {
+  @override
+  _CaptureState createState() => new _CaptureState();
+}
+
+class _CaptureState extends State<Capture> {
   CameraController controller;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    controller = CameraController(cameras[0], ResolutionPreset.medium);
-    controller.initialize().then((_) {
-      if (!mounted) {
+    availableCameras().then((cameras) {
+      CameraDescription rearCamera = cameras.firstWhere(
+              (desc) => desc.lensDirection == CameraLensDirection.back, orElse: () => null);
+      if (rearCamera == null) {
         return;
       }
-      setState(() {});
+
+      controller = new CameraController(rearCamera, ResolutionPreset.high);
+      controller.initialize().then((_) {
+        if (!mounted) {
+          return;
+        }
+        setState(() {});
+      });
     });
   }
 
@@ -41,12 +70,78 @@ class _CameraAppState extends State<CameraApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (!controller.value.isInitialized) {
-      return Container();
+
+    Widget preview;
+    if (!_isReady()) {
+      preview = new Container();
+    } else {
+      preview = new Container(
+          child: new Center(
+              child: new AspectRatio(
+                  aspectRatio: controller.value.aspectRatio,
+                  child: new CameraPreview(controller))
+          )
+      );
     }
-    return AspectRatio(
-        aspectRatio:
-        controller.value.aspectRatio,
-        child: CameraPreview(controller));
+    return new Scaffold(
+        key: _scaffoldKey,
+        appBar: new AppBar(
+          title: const Text("Camera"),
+        ),
+        body:
+        new Column(
+            children: <Widget>[
+              new Expanded(
+                child: preview,
+              ),
+              new IconButton(
+                  icon: new Icon(Icons.camera_alt),
+                  tooltip: 'Capture',
+                  onPressed: () { _onPressedCaptureIcon(); }
+              ),
+            ]
+        )
+    );
+  }
+
+  bool _isReady() {
+    return controller != null && controller.value.isInitialized;
+  }
+
+  _onPressedCaptureIcon() {
+    _takePicture().then((String filePath) {
+      _showSnackBar('Picture saved to $filePath');
+    }).catchError((e) {
+      _showSnackBar(e);
+    });
+  }
+
+  Future<String> _takePicture() async {
+    if (!_isReady()) {
+      throw("Camera controller is not initialized.");
+    }
+
+    final Directory extDir = await getApplicationDocumentsDirectory();
+    final String dirPath = '${extDir.path}/Pictures/flutter_test';
+    await new Directory(dirPath).create(recursive: true);
+    final String filePath = '$dirPath/${_timestamp()}.jpg';
+
+    if (controller.value.isTakingPicture) {
+      // A capture is already pending, do nothing.
+      throw("Camera is already pending.");
+    }
+
+    await controller.takePicture(filePath);
+
+    return filePath;
+  }
+
+  String _timestamp() => new DateTime.now().millisecondsSinceEpoch.toString();
+
+  void _showSnackBar(String text) {
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(text),
+    ));
   }
 }
+
