@@ -54,6 +54,7 @@ class _MultiImagePickerScreenState extends State<MultiImagePickerScreen> {
       );
     } on Exception catch (e) {
       error = e.toString();
+      error += "エラー";
     }
 
     // If the widget was removed from the tree while the asynchronous platform
