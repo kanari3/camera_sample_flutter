@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'multi.dart';
+import 'normal.dart';
 import 'simple_camera.dart';
 
 void main() {
@@ -8,6 +9,7 @@ void main() {
     routes: <String, WidgetBuilder> {
       '/capture': (BuildContext context) => Capture(),
       '/multi': (BuildContext context) => MultiImagePickerScreen(),
+      '/normal': (BuildContext context) => ImagePickerView(),
 
     },
   ));
@@ -34,6 +36,12 @@ class Home extends StatelessWidget {
               child: const Text("use multi image picker`"),
               onPressed: () {
                 Navigator.of(context).pushNamed("/multi");
+              },
+            ),
+            RaisedButton(
+              child: const Text("popular image picker`"),
+              onPressed: () {
+                Navigator.of(context).pushNamed("/normal");
               },
             ),
 
