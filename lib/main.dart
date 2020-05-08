@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kanari3_camera_sample/andpad_camera.dart';
 import 'multi.dart';
 import 'normal.dart';
 import 'simple_camera.dart';
@@ -10,6 +11,7 @@ void main() {
       '/capture': (BuildContext context) => Capture(),
       '/multi': (BuildContext context) => MultiImagePickerScreen(),
       '/normal': (BuildContext context) => ImagePickerView(),
+      '/andpad_camera': (BuildContext context) => AndpadCameraScreen(),
 
     },
   ));
@@ -44,6 +46,12 @@ class Home extends StatelessWidget {
                 Navigator.of(context).pushNamed("/normal");
               },
             ),
+            RaisedButton(
+              child: const Text("黒板カメラ"),
+              onPressed: () {
+                Navigator.of(context).pushNamed("/andpad_camera");
+              },
+            )
 
           ],
         ),

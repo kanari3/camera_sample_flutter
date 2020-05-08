@@ -2,13 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
-import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:multi_image_picker/multi_image_picker.dart';
-
-
-
 class MultiImagePickerScreen extends StatefulWidget {
   @override
   _MultiImagePickerScreenState createState() => new _MultiImagePickerScreenState();
