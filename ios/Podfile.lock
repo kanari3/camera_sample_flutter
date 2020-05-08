@@ -1,10 +1,11 @@
 PODS:
-  - andpad-camera (0.2.1)
   - BSGridCollectionViewLayout (1.2.5)
   - BSImagePicker (2.10.3):
     - BSGridCollectionViewLayout (= 1.2.5)
     - BSImageView (= 1.0.3)
   - BSImageView (1.0.3)
+  - camera (0.0.1):
+    - Flutter
   - Flutter (1.0.0)
   - image_picker (0.0.1):
     - Flutter
@@ -17,7 +18,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - "andpad-camera (from `git@github.com:88labs/andpad-camera-ios.git`, tag `v1.1.1`)"
+  - camera (from `.symlinks/plugins/camera/ios`)
   - Flutter (from `Flutter`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - multi_image_picker (from `.symlinks/plugins/multi_image_picker/ios`)
@@ -31,9 +32,8 @@ SPEC REPOS:
     - BSImageView
 
 EXTERNAL SOURCES:
-  andpad-camera:
-    :git: "git@github.com:88labs/andpad-camera-ios.git"
-    :tag: v1.1.1
+  camera:
+    :path: ".symlinks/plugins/camera/ios"
   Flutter:
     :path: Flutter
   image_picker:
@@ -45,22 +45,17 @@ EXTERNAL SOURCES:
   path_provider_macos:
     :path: ".symlinks/plugins/path_provider_macos/ios"
 
-CHECKOUT OPTIONS:
-  andpad-camera:
-    :git: "git@github.com:88labs/andpad-camera-ios.git"
-    :tag: v1.1.1
-
 SPEC CHECKSUMS:
-  andpad-camera: 1b7d3015e5d113f06df499e906e7f5063ca0e227
   BSGridCollectionViewLayout: 333dcb457a5a3bdd9212607ab5756553dcfe06cb
   BSImagePicker: 07404254f2fcdaf5a2eb403c0f8c337267ce8738
   BSImageView: a149459433a2687157d034c78e059d30ac7f2544
+  camera: 38cc83ae9a5667bb5a71c7d9edaf60a91920fd4e
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   image_picker: 16e5fec1fbc87fd3b297c53e4048521eaf17cd06
   multi_image_picker: b91a71242dfc28c46cae91c86774ba04ac8e7519
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
 
-PODFILE CHECKSUM: 70854a360f3d2e4aa765318d4a8154b62a2f329a
+PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
 
 COCOAPODS: 1.8.4
