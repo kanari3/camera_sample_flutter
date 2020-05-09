@@ -12,12 +12,6 @@ class _MultiImagePickerScreenState extends State<AndpadCameraScreen> {
 
   MethodChannel _methodChannel = MethodChannel('package.name/sample');
 
-  // ネイティブへのメッセージ送信＞画面遷移
-  Future<Null> _launchNativeScreen() async {
-    // ネイティブ側へメッセージを送信
-    await _methodChannel.invokeMethod('test', "parameters");
-  }
-
   @override
   void initState() {
     super.initState();
@@ -36,7 +30,7 @@ class _MultiImagePickerScreenState extends State<AndpadCameraScreen> {
             RaisedButton(
               child: Text("Pick images"),
               onPressed: (){
-
+                _launchNativeScreen();
               },
             ),
           ],
@@ -44,4 +38,20 @@ class _MultiImagePickerScreenState extends State<AndpadCameraScreen> {
       ),
     );
   }
+
+
+
+  // ネイティブへのメッセージ送信＞画面遷移
+  Future<Null> _launchNativeScreen() async {
+    // ネイティブ側へメッセージを送信
+    try {
+      final String result = await _methodChannel.invokeMethod('test', "parameters");
+      // 戻り値を使って処理を行う
+
+    } on PlatformException catch (e) {
+      // 必要に応じてエラー処理
+    }
+
+  }
+
 }
