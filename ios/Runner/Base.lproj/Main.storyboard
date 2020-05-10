@@ -7,10 +7,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Next Screen View Controller-->
+        <!--NextScreenViewController-->
         <scene sceneID="81K-Bz-Wcr">
             <objects>
-                <viewController storyboardIdentifier="NextScreenViewController" id="eEY-fG-1vT" customClass="NextScreenViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NextScreenViewController" title="NextScreenViewController" id="eEY-fG-1vT" customClass="NextScreenViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ZCW-PC-3PJ"/>
                         <viewControllerLayoutGuide type="bottom" id="pej-6q-jyR"/>

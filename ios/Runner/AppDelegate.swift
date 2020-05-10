@@ -41,11 +41,24 @@ import Flutter
 
 
     func launchiOSScreen(_ parameters: String?) {
-        //        let next: NextScreenViewController = NextScreenViewController()
-        //        next.delegate = self
-        //        flutterViewController.present(next, animated: true, completion: nil)
+
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let next = storyboard.instantiateViewController(withIdentifier: "NextScreenViewController") as! NextScreenViewController
+
+
+//        let next = NextScreenViewController()
+        next.delegate = self
+        flutterViewController.present(next, animated: true, completion: nil)
     }
 
+}
+
+extension AppDelegate: NextScreenViewControllerDelegate {
+    func nextScreenViewControllerSendMessage(_ viewController: NextScreenViewController, message: String) {
+       // 任意のオブジェクトを通知できます
+       result?(message)
+    }
 }
 
 class NextScreenViewController: UIViewController {
@@ -55,7 +68,11 @@ class NextScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        delegate?.nextScreenViewControllerSendMessage(self, message: "ほげほげ")
+
     }
+
+
     
 }
 
