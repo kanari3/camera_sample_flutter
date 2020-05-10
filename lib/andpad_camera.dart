@@ -17,6 +17,9 @@ class _MultiImagePickerScreenState extends State<AndpadCameraScreen> {
     super.initState();
   }
 
+  final _channel = MethodChannel('hello_ios');
+  String _message = 'Push Button';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,8 +32,10 @@ class _MultiImagePickerScreenState extends State<AndpadCameraScreen> {
             Center(child: Text('黒板カメラ')),
             RaisedButton(
               child: Text("Pick images"),
-              onPressed: (){
+              onPressed: () async {
                 _launchNativeScreen();
+//                final message = await _channel.invokeMethod('getMessage');
+//                print(message);
               },
             ),
           ],
@@ -40,13 +45,14 @@ class _MultiImagePickerScreenState extends State<AndpadCameraScreen> {
   }
 
 
-
   // ネイティブへのメッセージ送信＞画面遷移
   Future<Null> _launchNativeScreen() async {
     // ネイティブ側へメッセージを送信
     try {
       final String result = await _methodChannel.invokeMethod('test', "parameters");
       // 戻り値を使って処理を行う
+      print(result.toString());
+
 
     } on PlatformException catch (e) {
       // 必要に応じてエラー処理
@@ -55,3 +61,5 @@ class _MultiImagePickerScreenState extends State<AndpadCameraScreen> {
   }
 
 }
+
+

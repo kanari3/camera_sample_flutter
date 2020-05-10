@@ -17,46 +17,40 @@ import Flutter
         return self.window.rootViewController as! FlutterViewController
     }
 
-    override func application(
-        _
-        application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?
+    override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-    ) -> Bool {
+        let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
+        let methdoChannel = FlutterMethodChannel(name: methodChannelName, binaryMessenger: controller.binaryMessenger)
+        methdoChannel.setMethodCallHandler({
+            (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
+            // Note: this method is invoked on the UI thread.
+            // Handle battery messages.
 
+            if call.method == self.methodTest {
+                // invokeMethodの第二引数で指定したパラメータを受け取れます
+                let parameters = call.arguments as? String
+                self.launchiOSScreen(parameters)
+            }
+
+
+        })
 
         GeneratedPluginRegistrant.register(with: self)
-
-        // MethodChannelはAndroidと同様、名前とFlutterViewControllerから生成します
-        let methdoChannel = FlutterMethodChannel(name: methodChannelName, binaryMessenger: flutterViewController)
-        // MethodChannelからのメッセージを受け取ります
-        methdoChannel.setMethodCallHandler { [weak self] methodCall, result in
-            if methodChannel.method == methodTest {
-                // invokeMethodの第二引数で指定したパラメータを受け取れます
-                let parameters = methodCall.arguments as? String
-                self?.launchIOSScreen(parameters)
-            } else {
-                // 任意のオブジェクトを返却できます。ここでは明示的にFlutterErrorというオブジェクトを返却しています
-                result?(FlutterError(code: "ErrorCode", message: "ErrorMessage",details: nil))
-            }
-        }
-
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
-    private func launchIOSScreen(_ parameters: String?) {
-        let next: NextScreenViewController = NextScreenViewController()
-        next.delegate = self
-        flutterViewController.present(next, animated: true, completion: nil)
+
+    func launchiOSScreen(_ parameters: String?) {
+        //        let next: NextScreenViewController = NextScreenViewController()
+        //        next.delegate = self
+        //        flutterViewController.present(next, animated: true, completion: nil)
     }
-
-
-
-
 
 }
 
 class NextScreenViewController: UIViewController {
+
+    var delegate: NextScreenViewControllerDelegate? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,3 +58,8 @@ class NextScreenViewController: UIViewController {
     }
     
 }
+
+protocol NextScreenViewControllerDelegate {
+    func nextScreenViewControllerSendMessage(_ viewController: NextScreenViewController, message: String)
+}
+
