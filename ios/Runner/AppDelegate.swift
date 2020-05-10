@@ -4,50 +4,48 @@ import Flutter
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
 
+    let methodChannelName = "package.name/sample"
+    let methodTest = "test"
 
-    /// main.dartでMethodChannelのコンストラクタで指定した文字列です
-    private let methodChannelName = "package.name/sample"
-    /// main.dartでinvokeMethodの第一引数に指定したmethodの文字列です
-    private let methodTest = "test"
+    var globalResult: FlutterResult?
 
-    // MethodChnnelの結果通知に使います
-    private var result: FlutterResult?
-
-    private var flutterViewController: FlutterViewController {
+    var flutterViewController: FlutterViewController {
         return self.window.rootViewController as! FlutterViewController
     }
 
     override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        GeneratedPluginRegistrant.register(with: self)
 
         let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
         let methdoChannel = FlutterMethodChannel(name: methodChannelName, binaryMessenger: controller.binaryMessenger)
+
         methdoChannel.setMethodCallHandler({
-            (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
-            // Note: this method is invoked on the UI thread.
-            // Handle battery messages.
+            [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
 
-            if call.method == self.methodTest {
-                // invokeMethodの第二引数で指定したパラメータを受け取れます
+            if call.method == "test" {
+                // invokeMethodの第二引数で指定したパラメータを受け取れる
                 let parameters = call.arguments as? String
-                self.launchiOSScreen(parameters)
-            }
+                self?.launchiOSScreen(parameters)
 
+                self?.globalResult = result
+//                result("appdelegateからはok、ここでresult返すと終わっちゃう")
+            } else {
+                result(FlutterError(code: "ErrorCode", message: "ErrorMessage",details: nil))
+            }
 
         })
 
-        GeneratedPluginRegistrant.register(with: self)
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
 
     func launchiOSScreen(_ parameters: String?) {
 
+        print("dartからiosへのmessage")
+        print(parameters!)
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let next = storyboard.instantiateViewController(withIdentifier: "NextScreenViewController") as! NextScreenViewController
-
-
-//        let next = NextScreenViewController()
         next.delegate = self
         flutterViewController.present(next, animated: true, completion: nil)
     }
@@ -57,7 +55,15 @@ import Flutter
 extension AppDelegate: NextScreenViewControllerDelegate {
     func nextScreenViewControllerSendMessage(_ viewController: NextScreenViewController, message: String) {
        // 任意のオブジェクトを通知できます
-       result?(message)
+        print("iosから通知する")
+
+        if let r = globalResult {
+            print("ok")
+            r("ぐろーばる: \(message)")
+        }else{
+            print("だめっぽい")
+        }
+
     }
 }
 
@@ -65,15 +71,24 @@ class NextScreenViewController: UIViewController {
 
     var delegate: NextScreenViewControllerDelegate? = nil
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    @IBAction func buttonAction(_ sender: Any) {
 
-        delegate?.nextScreenViewControllerSendMessage(self, message: "ほげほげ")
-
+        delegate?.nextScreenViewControllerSendMessage(self, message: "ぼたんおした")
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print("ねくすと表示")
 
-    
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+//            self.delegate?.nextScreenViewControllerSendMessage(self, message: "didloadだと実行されないので注意")
+        }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        delegate?.nextScreenViewControllerSendMessage(self, message: "とじた")
+    }
 }
 
 protocol NextScreenViewControllerDelegate {

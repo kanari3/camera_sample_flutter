@@ -32,10 +32,8 @@ class _MultiImagePickerScreenState extends State<AndpadCameraScreen> {
             Center(child: Text('黒板カメラ')),
             RaisedButton(
               child: Text("Pick images"),
-              onPressed: () async {
-                _launchNativeScreen();
-//                final message = await _channel.invokeMethod('getMessage');
-//                print(message);
+              onPressed: ()  {
+                 _launchNativeScreen();
               },
             ),
           ],
@@ -49,13 +47,17 @@ class _MultiImagePickerScreenState extends State<AndpadCameraScreen> {
   Future<Null> _launchNativeScreen() async {
     // ネイティブ側へメッセージを送信
     try {
-      final String result = await _methodChannel.invokeMethod('test', "parameters");
+      print("とらい");
+      final String result = await _methodChannel.invokeMethod('test', "だーとから");
       // 戻り値を使って処理を行う
+      print("せいじょー");
       print(result.toString());
 
 
     } on PlatformException catch (e) {
       // 必要に応じてエラー処理
+      print("えらー");
+      print(e.toString());
     }
 
   }

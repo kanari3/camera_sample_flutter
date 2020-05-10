@@ -25,10 +25,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dJi-Iu-2pu">
+                                <rect key="frame" x="70" y="175" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="buttonAction:" destination="eEY-fG-1vT" eventType="touchUpInside" id="El2-me-XgT"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="dJi-Iu-2pu" firstAttribute="top" secondItem="klh-m6-ITt" secondAttribute="bottom" constant="50" id="7fa-iH-qhW"/>
                             <constraint firstItem="klh-m6-ITt" firstAttribute="leading" secondItem="xbY-sS-QIS" secondAttribute="leadingMargin" constant="60" id="Bqs-aa-ddP"/>
+                            <constraint firstItem="dJi-Iu-2pu" firstAttribute="leading" secondItem="xbY-sS-QIS" secondAttribute="leadingMargin" constant="50" id="dmj-hE-9hA"/>
                             <constraint firstItem="klh-m6-ITt" firstAttribute="top" secondItem="ZCW-PC-3PJ" secondAttribute="bottom" constant="60" id="eW4-eK-Gia"/>
                             <constraint firstAttribute="trailingMargin" secondItem="klh-m6-ITt" secondAttribute="trailing" constant="60" id="nrM-ds-scX"/>
                         </constraints>
