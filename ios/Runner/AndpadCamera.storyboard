@@ -11,23 +11,33 @@
         <!--Andpad Camera View Controller-->
         <scene sceneID="E9A-mD-xCG">
             <objects>
-                <viewController id="Gxe-ge-dKu" customClass="AndpadCameraViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AndpadCameraViewController" id="Gxe-ge-dKu" customClass="AndpadCameraViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tU9-0k-sP4">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3g1-ST-RPu">
+                                <rect key="frame" x="80" y="124" width="254" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="openCamera:" destination="Gxe-ge-dKu" eventType="touchUpInside" id="nqu-qD-dxb"/>
+                                </connections>
+                            </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UPh-Ku-shw">
-                                <rect key="frame" x="10" y="54" width="394" height="200"/>
+                                <rect key="frame" x="10" y="194" width="394" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="cdd-BU-6Yn"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="UPh-Ku-shw" firstAttribute="top" secondItem="dnm-EO-3iz" secondAttribute="top" constant="10" id="2NV-p9-cAZ"/>
                             <constraint firstItem="dnm-EO-3iz" firstAttribute="trailing" secondItem="UPh-Ku-shw" secondAttribute="trailing" constant="10" id="HSh-mg-U22"/>
+                            <constraint firstItem="UPh-Ku-shw" firstAttribute="top" secondItem="3g1-ST-RPu" secondAttribute="bottom" constant="40" id="XkD-RV-SO0"/>
+                            <constraint firstItem="3g1-ST-RPu" firstAttribute="leading" secondItem="dnm-EO-3iz" secondAttribute="leading" constant="80" id="ZPd-Uj-vYX"/>
+                            <constraint firstItem="3g1-ST-RPu" firstAttribute="top" secondItem="dnm-EO-3iz" secondAttribute="top" constant="80" id="eHX-lL-0eG"/>
                             <constraint firstItem="UPh-Ku-shw" firstAttribute="leading" secondItem="dnm-EO-3iz" secondAttribute="leading" constant="10" id="vTg-X4-vPA"/>
+                            <constraint firstItem="dnm-EO-3iz" firstAttribute="trailing" secondItem="3g1-ST-RPu" secondAttribute="trailing" constant="80" id="xpi-ir-K9A"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="dnm-EO-3iz"/>
                     </view>

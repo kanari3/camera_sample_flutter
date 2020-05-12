@@ -73,7 +73,17 @@ class NextScreenViewController: UIViewController {
 
     @IBAction func buttonAction(_ sender: Any) {
 
-        delegate?.nextScreenViewControllerSendMessage(self, message: "ぼたんおした")
+//        delegate?.nextScreenViewControllerSendMessage(self, message: "ぼたんおした")
+
+
+        let storyboard = UIStoryboard(name: "AndpadCamera", bundle: nil)
+        let camera = storyboard.instantiateViewController(withIdentifier: "AndpadCameraViewController") as! AndpadCameraViewController
+
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        appDelegate.flutterViewController.present(camera, animated: true, completion: nil)
+
+        self.present(camera, animated: true, completion: nil)
+        
     }
 
     override func viewDidLoad() {
