@@ -12,13 +12,34 @@ class _MultiImagePickerScreenState extends State<AndpadCameraScreen> {
 
   MethodChannel _methodChannel = MethodChannel('package.name/sample');
 
+  MethodChannel androidChannel = const MethodChannel('samples.flutter.dev/battery');
+
+  // Get battery level.
+  String _batteryLevel = 'Unknown battery level.';
+
+  Future<void> _getBatteryLevel() async {
+    String batteryLevel;
+    try {
+      print("pppp01");
+      final int result = await androidChannel.invokeMethod('getBatteryLevel');
+      print("pppp02");
+      batteryLevel = 'Battery level at $result % .';
+      print("pppp03");
+    } on PlatformException catch (e) {
+      print("pppp04");
+
+      batteryLevel = "Failed to get battery level: '${e.message}'.";
+    }
+
+    setState(() {
+      _batteryLevel = batteryLevel;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
   }
-
-  final _channel = MethodChannel('hello_ios');
-  String _message = 'Push Button';
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +54,13 @@ class _MultiImagePickerScreenState extends State<AndpadCameraScreen> {
             RaisedButton(
               child: Text("Pick images"),
               onPressed: ()  {
-                 _launchNativeScreen();
+//                 _launchNativeScreen();
+                _getBatteryLevel();
               },
             ),
+
+            Text(_batteryLevel),
+
           ],
         ),
       ),
